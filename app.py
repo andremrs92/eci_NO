@@ -2,59 +2,102 @@ import streamlit as st
 import json
 import os
 from datetime import datetime, timedelta
-import subprocess
 
-ARQUIVO = "oportunidades.json"
+ARQUIVO = "py/oportunidades.json" if os.path.exists("py/oportunidades.json") else "oportunidades.json"
 
+
+# -----------------------------
+# Utilidades
+# -----------------------------
 def carregar():
     if not os.path.exists(ARQUIVO):
         return []
     with open(ARQUIVO, "r", encoding="utf-8") as f:
         return json.load(f)
 
-def parse(d):
+
+def parse_data(d):
     try:
-        return datetime.strptime(d["data_publicacao"], "%Y-%m-%d")
-    except:
+        return datetime.strptime(d.get("data_publicacao", ""), "%Y-%m-%d")
+    except Exception:
         return datetime.now()
 
-def filtro_data(dados, periodo):
+
+def filtrar_por_data(dados, periodo):
     hoje = datetime.now()
+
     if periodo == "Hoje":
-        return [d for d in dados if (hoje - parse(d)).days == 0]
+        return [d for d in dados if (hoje - parse_data(d)).days == 0]
+
     if periodo == "Últimos 7 dias":
-        return [d for d in dados if (hoje - parse(d)).days <= 7]
+        return [d for d in dados if (hoje - parse_data(d)).days <= 7]
+
     if periodo == "Últimos 30 dias":
-        return [d for d in dados if (hoje - parse(d)).days <= 30]
+        return [d for d in dados if (hoje - parse_data(d)).days <= 30]
+
     return dados
 
-st.set_page_config(layout="wide")
-st.title("📡 Radar de Projetos de PPP & Concessões")
 
-if st.button("🔎 BUSCAR NOVOS PROJETOS"):
-    with st.spinner("Executando pipeline…"):
-        subprocess.run(["python", "run_pipeline.py"], check=True)
-    st.success("✅ Atualizado")
-    st.rerun()
+# -----------------------------
+# Interface
+# -----------------------------
+st.set_page_config(page_title="Radar de PPP & Concessões", layout="wide")
+
+st.title("📡 Radar de Projetos de PPP & Concessões")
+st.caption("🔒 Atualizado automaticamente pelo sistema interno")
 
 dados = carregar()
-dados_f = list(dados)
 
-setor = st.selectbox("Setor", ["Todos"] + sorted(set(d.get("setor","Outro") for d in dados)))
-periodo = st.selectbox("Período", ["Todos","Hoje","Últimos 7 dias","Últimos 30 dias"])
+# -----------------------------
+# KPIs simples
+# -----------------------------
+col1, col2, col3 = st.columns(3)
 
-if setor != "Todos":
-    dados_f = [d for d in dados_f if d.get("setor") == setor]
+col1.metric("Projetos identificados", len(dados))
 
-dados_f = filtro_data(dados_f, periodo)
+if dados:
+    datas = [parse_data(d) for d in dados]
+    col2.metric("Última atualização", max(datas).strftime("%d/%m/%Y"))
+else:
+    col2.metric("Última atualização", "-")
+
+altas = [d for d in dados if d.get("relevancia") == "Alta"]
+col3.metric("Alta relevância", len(altas))
 
 st.divider()
 
-for d in dados_f:
-    st.subheader(d.get("titulo"))
-    st.caption(
-        f"{d.get('setor')} | Estágio: {d.get('estagio')} | Relevância: {d.get('relevancia')}"
-    )
-    st.write(d.get("resumo"))
-    st.link_button("Fonte", d.get("link"))
-    st.divider()
+# -----------------------------
+# Filtros
+# -----------------------------
+setores = sorted(set(d.get("setor", "Outro") for d in dados))
+setor = st.selectbox("Setor", ["Todos"] + setores)
+
+periodo = st.selectbox(
+    "Período",
+    ["Todos", "Hoje", "Últimos 7 dias", "Últimos 30 dias"]
+)
+
+dados_filtrados = list(dados)
+
+if setor != "Todos":
+    dados_filtrados = [d for d in dados_filtrados if d.get("setor") == setor]
+
+dados_filtrados = filtrar_por_data(dados_filtrados, periodo)
+
+st.divider()
+
+# -----------------------------
+# Lista de oportunidades
+# -----------------------------
+if not dados_filtrados:
+    st.info("Nenhuma oportunidade encontrada para os filtros selecionados.")
+else:
+    for d in dados_filtrados:
+        st.subheader(d.get("titulo"))
+        st.caption(
+            f"{d.get('setor')} | Estágio: {d.get('estagio')} | Relevância: {d.get('relevancia')}"
+        )
+        st.write(d.get("resumo"))
+        if d.get("link"):
+            st.link_button("Ver fonte", d.get("link"))
+        st.divider()
