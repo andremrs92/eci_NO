@@ -1,15 +1,14 @@
 import streamlit as st
 import json
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 
-ARQUIVO = "py/oportunidades.json" if os.path.exists("py/oportunidades.json") else "oportunidades.json"
-
+ARQUIVO = "oportunidades.json"
 
 # -----------------------------
 # Utilidades
 # -----------------------------
-def carregar():
+def carregar_dados():
     if not os.path.exists(ARQUIVO):
         return []
     with open(ARQUIVO, "r", encoding="utf-8") as f:
@@ -44,27 +43,9 @@ def filtrar_por_data(dados, periodo):
 st.set_page_config(page_title="Radar de PPP & Concessões", layout="wide")
 
 st.title("📡 Radar de Projetos de PPP & Concessões")
-st.caption("🔒 Atualizado automaticamente pelo sistema interno")
+st.caption("🔒 Dados atualizados pelo sistema interno")
 
-dados = carregar()
-
-# -----------------------------
-# KPIs simples
-# -----------------------------
-col1, col2, col3 = st.columns(3)
-
-col1.metric("Projetos identificados", len(dados))
-
-if dados:
-    datas = [parse_data(d) for d in dados]
-    col2.metric("Última atualização", max(datas).strftime("%d/%m/%Y"))
-else:
-    col2.metric("Última atualização", "-")
-
-altas = [d for d in dados if d.get("relevancia") == "Alta"]
-col3.metric("Alta relevância", len(altas))
-
-st.divider()
+dados = carregar_dados()
 
 # -----------------------------
 # Filtros
