@@ -42,7 +42,7 @@ def filtrar_por_data(dados, periodo):
 # -----------------------------
 st.set_page_config(page_title="Radar de PPP & Concessões", layout="wide")
 
-st.title("📡 Radar de Projetos de PPP & Concessões")
+st.title("📡 Radar de Projetos de PPP's & Concessões")
 st.caption("🔒 Dados atualizados pelo sistema interno")
 
 dados = carregar_dados()
