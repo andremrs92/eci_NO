@@ -19,7 +19,15 @@ def parse_data(d):
     try:
         return datetime.strptime(d.get("data_publicacao", ""), "%Y-%m-%d")
     except Exception:
-        return datetime.now()
+        return datetime.min  # importante pra ordenar direito
+
+
+def formatar_data(d):
+    try:
+        data = datetime.strptime(d.get("data_publicacao", ""), "%Y-%m-%d")
+        return data.strftime("%d/%m/%Y")
+    except:
+        return "-"
 
 
 def filtrar_por_data(dados, periodo):
@@ -46,6 +54,9 @@ st.title("📡 Radar de Projetos de PPP's & Concessões")
 st.caption("🔒 Dados atualizados pelo sistema interno")
 
 dados = carregar_dados()
+
+# 🔥 ORDENAÇÃO (mais recente no topo)
+dados = sorted(dados, key=parse_data, reverse=True)
 
 # -----------------------------
 # Filtros
@@ -74,11 +85,17 @@ if not dados_filtrados:
     st.info("Nenhuma oportunidade encontrada para os filtros selecionados.")
 else:
     for d in dados_filtrados:
+
         st.subheader(d.get("titulo"))
+
+        # ✅ NOVO FORMATO (com data + sem relevancia)
         st.caption(
-            f"{d.get('setor')} | Estágio: {d.get('estagio')} | Relevância: {d.get('relevancia')}"
+            f"📅 {formatar_data(d)} | {d.get('setor')} | Estágio: {d.get('estagio')}"
         )
+
         st.write(d.get("resumo"))
+
         if d.get("link"):
             st.link_button("Ver fonte", d.get("link"))
+
         st.divider()
