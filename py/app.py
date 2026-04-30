@@ -5,8 +5,9 @@ from datetime import datetime
 
 ARQUIVO = "oportunidades.json"
 
+
 # -----------------------------
-# Utilidades
+# Utils
 # -----------------------------
 def carregar_dados():
     if not os.path.exists(ARQUIVO):
@@ -18,7 +19,7 @@ def carregar_dados():
 def parse_data(d):
     try:
         return datetime.strptime(d.get("data_publicacao", ""), "%Y-%m-%d")
-    except Exception:
+    except:
         return datetime.min
 
 
@@ -28,6 +29,30 @@ def formatar_data(d):
         return data.strftime("%d/%m/%Y")
     except:
         return "-"
+
+
+def extrair_mes_ano(d):
+    data = parse_data(d)
+
+    meses_pt = {
+        "January": "Janeiro",
+        "February": "Fevereiro",
+        "March": "Março",
+        "April": "Abril",
+        "May": "Maio",
+        "June": "Junho",
+        "July": "Julho",
+        "August": "Agosto",
+        "September": "Setembro",
+        "October": "Outubro",
+        "November": "Novembro",
+        "December": "Dezembro",
+    }
+
+    mes_en = data.strftime("%B")
+    mes_pt = meses_pt.get(mes_en, mes_en)
+
+    return f"{mes_pt} {data.year}"
 
 
 def filtrar_por_data(dados, periodo):
@@ -48,60 +73,42 @@ def filtrar_por_data(dados, periodo):
     return dados
 
 
-def extrair_mes_ano(d):
-    data = parse_data(d)
-    return data.strftime("%B %Y")  # ex: April 2026
-
-
 # -----------------------------
-# Interface
+# UI
 # -----------------------------
-st.set_page_config(page_title="Radar de PPP & Concessões", layout="wide")
+st.set_page_config(page_title="Radar PPP", layout="wide")
 
 st.title("📡 Radar de Projetos de PPP's & Concessões")
 st.caption("🔒 Dados atualizados pelo sistema interno")
 
 dados = carregar_dados()
 
-# ✅ Ordena por data (mais recente primeiro)
+# ✅ ordena
 dados = sorted(dados, key=parse_data, reverse=True)
 
+
 # -----------------------------
-# FILTROS
+# Filtros
 # -----------------------------
 
-# 🔹 Filtro rápido
 periodo = st.selectbox(
     "Período",
     ["Todos", "Hoje", "Últimos 7 dias", "Últimos 30 dias", "Mais antigos"]
 )
 
-# 🔹 Filtro por mês (🔥 principal melhoria)
-meses = sorted(
-    set(extrair_mes_ano(d) for d in dados),
-    reverse=True
-)
-
+meses = sorted(set(extrair_mes_ano(d) for d in dados), reverse=True)
 mes_selecionado = st.selectbox("Mês", ["Todos"] + meses)
 
-# 🔹 Filtro por setor (mantido)
 setores = sorted(set(d.get("setor", "Outro") for d in dados))
 setor = st.selectbox("Setor", ["Todos"] + setores)
 
-# -----------------------------
-# Aplicação dos filtros
-# -----------------------------
-
 dados_filtrados = list(dados)
 
-# setor
 if setor != "Todos":
     dados_filtrados = [d for d in dados_filtrados if d.get("setor") == setor]
 
-# período
 dados_filtrados = filtrar_por_data(dados_filtrados, periodo)
 
-# mês
 if mes_selecionado != "Todos":
     dados_filtrados = [
         d for d in dados_filtrados
@@ -110,13 +117,18 @@ if mes_selecionado != "Todos":
 
 st.divider()
 
+
 # -----------------------------
-# Lista de oportunidades
+# LISTA
 # -----------------------------
 if not dados_filtrados:
-    st.info("Nenhuma oportunidade encontrada para os filtros selecionados.")
+    st.info("Nenhuma oportunidade encontrada.")
 else:
     for d in dados_filtrados:
+
+        # ✅ IMAGEM
+        if d.get("imagem"):
+            st.image(d.get("imagem"), use_container_width=True)
 
         st.subheader(d.get("titulo"))
 
