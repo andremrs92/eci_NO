@@ -7,7 +7,6 @@ from storage import salvar_oportunidade
 MAX_ANALISES_IA = 50
 MODO_SECO = False
 
-
 TERMOS_ELEGIVEIS = [
     "ppp",
     "parceria",
@@ -17,33 +16,6 @@ TERMOS_ELEGIVEIS = [
 ]
 
 
-# -----------------------------
-# 🧠 DEDUPLICAÇÃO
-# -----------------------------
-def normalizar_texto(texto):
-    return texto.lower().strip() if texto else ""
-
-
-def remover_duplicados(itens):
-    vistos = set()
-    resultado = []
-
-    for item in itens:
-        titulo = normalizar_texto(item.get("titulo", ""))
-        chave = titulo
-
-        if chave in vistos:
-            continue
-
-        vistos.add(chave)
-        resultado.append(item)
-
-    return resultado
-
-
-# -----------------------------
-# 🚀 PIPELINE
-# -----------------------------
 def executar_pipeline():
     print("🔎 Radar iniciado")
 
@@ -51,17 +23,12 @@ def executar_pipeline():
     itens += coletar_rss(dias=30)
     itens += coletar_noticias_agregador(dias=30)
 
-    print(f"📄 {len(itens)} coletados")
-
-    # ✅ remove duplicados
-    itens = remover_duplicados(itens)
-    print(f"🧹 {len(itens)} únicos")
+    print(f"📄 {len(itens)} itens coletados")
 
     analises = 0
     novas = 0
 
     for item in itens:
-
         texto = f"{item.get('titulo','')} {item.get('texto','')}".lower()
 
         if not any(t in texto for t in TERMOS_ELEGIVEIS):
@@ -79,18 +46,16 @@ def executar_pipeline():
         if not analise.get("eh_oportunidade"):
             continue
 
-        # ✅ IMPORTANTE: mantém imagem
         oportunidade = {
             **item,
-            **analise,
-            "imagem": item.get("imagem")  # garante que vá pro JSON
+            **analise
         }
 
         if salvar_oportunidade(oportunidade):
             novas += 1
             print("✅ Nova:", oportunidade.get("titulo"))
 
-    print(f"✅ Fim | IA: {analises} | Novas: {novas}")
+    print(f"✅ Finalizado | IA usadas: {analises} | Novas: {novas}")
 
 
 if __name__ == "__main__":
