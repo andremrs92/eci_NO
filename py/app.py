@@ -19,11 +19,7 @@ def parse_data(d):
     try:
         return datetime.strptime(d.get("data_publicacao", ""), "%Y-%m-%d")
     except Exception:
-<<<<<<< Updated upstream
         return datetime.min
-=======
-        return datetime.min  # importante pra ordenar direito
->>>>>>> Stashed changes
 
 
 def formatar_data(d):
@@ -59,11 +55,7 @@ st.caption("🔒 Dados atualizados pelo sistema interno")
 
 dados = carregar_dados()
 
-<<<<<<< Updated upstream
-# ✅ ORDENAÇÃO (mais recente primeiro)
-=======
-# 🔥 ORDENAÇÃO (mais recente no topo)
->>>>>>> Stashed changes
+# ✅ Ordena do mais recente para o mais antigo
 dados = sorted(dados, key=parse_data, reverse=True)
 
 # -----------------------------
@@ -93,15 +85,10 @@ if not dados_filtrados:
     st.info("Nenhuma oportunidade encontrada para os filtros selecionados.")
 else:
     for d in dados_filtrados:
-
         st.subheader(d.get("titulo"))
 
-<<<<<<< Updated upstream
-=======
-        # ✅ NOVO FORMATO (com data + sem relevancia)
->>>>>>> Stashed changes
         st.caption(
-            f"📅 {formatar_data(d)} | {d.get('setor')} | Estágio: {d.get('estagio')}"
+            f"{formatar_data(d)} | {d.get('setor')} | Estágio: {d.get('estagio')}"
         )
 
         st.write(d.get("resumo"))
