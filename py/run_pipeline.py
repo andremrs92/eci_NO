@@ -16,7 +16,35 @@ TERMOS_ELEGIVEIS = [
     "parceiro privado",
 ]
 
+# -----------------------------
+# 🧠 DEDUPLICAÇÃO
+# -----------------------------
+def normalizar_texto(texto):
+    return texto.lower().strip() if texto else ""
 
+
+def remover_duplicados(itens):
+    vistos = set()
+    resultado = []
+
+    for item in itens:
+        titulo = normalizar_texto(item.get("titulo", ""))
+
+        # chave baseada no título
+        chave = titulo
+
+        if chave in vistos:
+            continue
+
+        vistos.add(chave)
+        resultado.append(item)
+
+    return resultado
+
+
+# -----------------------------
+# 🚀 PIPELINE
+# -----------------------------
 def executar_pipeline():
     print("🔎 Radar de descoberta iniciado")
 
@@ -25,6 +53,11 @@ def executar_pipeline():
     itens += coletar_noticias_agregador(dias=30)
 
     print(f"📄 {len(itens)} itens coletados")
+
+    # ✅ REMOVE DUPLICADOS ANTES DA IA
+    itens = remover_duplicados(itens)
+
+    print(f"🧹 Após deduplicação: {len(itens)} itens únicos")
 
     analises = 0
     novas = 0
@@ -37,7 +70,7 @@ def executar_pipeline():
         if not any(t in texto_lower for t in TERMOS_ELEGIVEIS):
             continue
 
-        # ✅ Limite controlado de IA (sem quebrar o loop)
+        # ✅ Limite controlado de IA
         if analises >= MAX_ANALISES_IA:
             continue
 
