@@ -16,10 +16,11 @@ def carregar_dados():
         return json.load(f)
 
 
-def carregar_ultima_atualizacao():
+# ✅ pega última atualização pelo arquivo (SIMPLES)
+def pegar_ultima_atualizacao():
     try:
-        with open("ultima_atualizacao.json", "r", encoding="utf-8") as f:
-            return json.load(f).get("ultima_atualizacao")
+        timestamp = os.path.getmtime(ARQUIVO)
+        return datetime.fromtimestamp(timestamp).strftime("%d/%m/%y - %H:%M")
     except:
         return None
 
@@ -88,7 +89,8 @@ st.set_page_config(page_title="Radar PPP", layout="wide")
 
 st.title("📡 Radar de Projetos de PPP's & Concessões")
 
-ultima = carregar_ultima_atualizacao()
+# ✅ MOSTRA DATA AQUI (O QUE VOCÊ QUERIA)
+ultima = pegar_ultima_atualizacao()
 
 if ultima:
     st.caption(f"🔒 Dados atualizados pelo sistema interno • Última atualização: {ultima}")
@@ -97,11 +99,11 @@ else:
 
 dados = carregar_dados()
 
-# ✅ ordena
+# ordena
 dados = sorted(dados, key=parse_data, reverse=True)
 
 # -----------------------------
-# FILTROS (voltaram 🔥)
+# FILTROS
 # -----------------------------
 periodo = st.selectbox(
     "Período",
