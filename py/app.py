@@ -19,7 +19,7 @@ def parse_data(d):
     try:
         return datetime.strptime(d.get("data_publicacao", ""), "%Y-%m-%d")
     except Exception:
-        return datetime.min  # importante pra ordenar direito
+        return datetime.min
 
 
 def formatar_data(d):
@@ -55,7 +55,7 @@ st.caption("🔒 Dados atualizados pelo sistema interno")
 
 dados = carregar_dados()
 
-# 🔥 ORDENAÇÃO (mais recente no topo)
+# ✅ ORDENAÇÃO (mais recente primeiro)
 dados = sorted(dados, key=parse_data, reverse=True)
 
 # -----------------------------
@@ -88,7 +88,6 @@ else:
 
         st.subheader(d.get("titulo"))
 
-        # ✅ NOVO FORMATO (com data + sem relevancia)
         st.caption(
             f"📅 {formatar_data(d)} | {d.get('setor')} | Estágio: {d.get('estagio')}"
         )
