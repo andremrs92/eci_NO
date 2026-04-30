@@ -39,6 +39,48 @@ def formatar_data(d):
         return "-"
 
 
+def extrair_mes_ano(d):
+    data = parse_data(d)
+
+    meses_pt = {
+        "January": "Janeiro",
+        "February": "Fevereiro",
+        "March": "Março",
+        "April": "Abril",
+        "May": "Maio",
+        "June": "Junho",
+        "July": "Julho",
+        "August": "Agosto",
+        "September": "Setembro",
+        "October": "Outubro",
+        "November": "Novembro",
+        "December": "Dezembro",
+    }
+
+    mes_en = data.strftime("%B")
+    mes_pt = meses_pt.get(mes_en, mes_en)
+
+    return f"{mes_pt} {data.year}"
+
+
+def filtrar_por_data(dados, periodo):
+    hoje = datetime.now()
+
+    if periodo == "Hoje":
+        return [d for d in dados if (hoje - parse_data(d)).days == 0]
+
+    if periodo == "Últimos 7 dias":
+        return [d for d in dados if (hoje - parse_data(d)).days <= 7]
+
+    if periodo == "Últimos 30 dias":
+        return [d for d in dados if (hoje - parse_data(d)).days <= 30]
+
+    if periodo == "Mais antigos":
+        return [d for d in dados if (hoje - parse_data(d)).days > 30]
+
+    return dados
+
+
 # -----------------------------
 # UI
 # -----------------------------
@@ -55,18 +97,45 @@ else:
 
 dados = carregar_dados()
 
-# ordena
+# ✅ ordena
 dados = sorted(dados, key=parse_data, reverse=True)
+
+# -----------------------------
+# FILTROS (voltaram 🔥)
+# -----------------------------
+periodo = st.selectbox(
+    "Período",
+    ["Todos", "Hoje", "Últimos 7 dias", "Últimos 30 dias", "Mais antigos"]
+)
+
+meses = sorted(set(extrair_mes_ano(d) for d in dados), reverse=True)
+mes_selecionado = st.selectbox("Mês", ["Todos"] + meses)
+
+setores = sorted(set(d.get("setor", "Outro") for d in dados))
+setor = st.selectbox("Setor", ["Todos"] + setores)
+
+dados_filtrados = list(dados)
+
+if setor != "Todos":
+    dados_filtrados = [d for d in dados_filtrados if d.get("setor") == setor]
+
+dados_filtrados = filtrar_por_data(dados_filtrados, periodo)
+
+if mes_selecionado != "Todos":
+    dados_filtrados = [
+        d for d in dados_filtrados
+        if extrair_mes_ano(d) == mes_selecionado
+    ]
 
 st.divider()
 
 # -----------------------------
 # LISTA
 # -----------------------------
-if not dados:
+if not dados_filtrados:
     st.info("Nenhuma oportunidade encontrada.")
 else:
-    for d in dados:
+    for d in dados_filtrados:
 
         st.subheader(d.get("titulo"))
 
