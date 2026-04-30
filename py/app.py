@@ -1,7 +1,7 @@
 import streamlit as st
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 ARQUIVO = "oportunidades.json"
 
@@ -14,15 +14,6 @@ def carregar_dados():
         return []
     with open(ARQUIVO, "r", encoding="utf-8") as f:
         return json.load(f)
-
-
-# ✅ pega última atualização pelo arquivo (SIMPLES)
-def pegar_ultima_atualizacao():
-    try:
-        timestamp = os.path.getmtime(ARQUIVO)
-        return datetime.fromtimestamp(timestamp).strftime("%d/%m/%y - %H:%M")
-    except:
-        return None
 
 
 def parse_data(d):
@@ -38,6 +29,15 @@ def formatar_data(d):
         return data.strftime("%d/%m/%Y")
     except:
         return "-"
+
+
+# ✅ ÚNICA COISA ALTERADA (hora Brasil)
+def pegar_ultima_atualizacao():
+    try:
+        timestamp = os.path.getmtime(ARQUIVO)
+        return (datetime.fromtimestamp(timestamp) - timedelta(hours=3)).strftime("%d/%m/%y - %H:%M")
+    except:
+        return None
 
 
 def extrair_mes_ano(d):
@@ -89,7 +89,7 @@ st.set_page_config(page_title="Radar PPP", layout="wide")
 
 st.title("📡 Radar de Projetos de PPP's & Concessões")
 
-# ✅ MOSTRA DATA AQUI (O QUE VOCÊ QUERIA)
+# ✅ agora com hora correta
 ultima = pegar_ultima_atualizacao()
 
 if ultima:
@@ -99,22 +99,33 @@ else:
 
 dados = carregar_dados()
 
-# ordena
+# ✅ ordena
 dados = sorted(dados, key=parse_data, reverse=True)
+
 
 # -----------------------------
 # FILTROS
 # -----------------------------
+
 periodo = st.selectbox(
     "Período",
     ["Todos", "Hoje", "Últimos 7 dias", "Últimos 30 dias", "Mais antigos"]
 )
 
-meses = sorted(set(extrair_mes_ano(d) for d in dados), reverse=True)
+meses = sorted(
+    set(extrair_mes_ano(d) for d in dados),
+    reverse=True
+)
+
 mes_selecionado = st.selectbox("Mês", ["Todos"] + meses)
 
 setores = sorted(set(d.get("setor", "Outro") for d in dados))
 setor = st.selectbox("Setor", ["Todos"] + setores)
+
+
+# -----------------------------
+# Aplicar filtros
+# -----------------------------
 
 dados_filtrados = list(dados)
 
@@ -130,6 +141,7 @@ if mes_selecionado != "Todos":
     ]
 
 st.divider()
+
 
 # -----------------------------
 # LISTA
