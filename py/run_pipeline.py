@@ -1,5 +1,4 @@
 from rss import coletar_rss
-from news_aggregator import coletar_noticias_agregador
 from openai_agent import analisar_texto
 from storage import salvar_oportunidade
 
@@ -19,9 +18,8 @@ TERMOS_ELEGIVEIS = [
 def executar_pipeline():
     print("🔎 Radar iniciado")
 
-    itens = []
-    itens += coletar_rss(dias=30)
-    itens += coletar_noticias_agregador(dias=30)
+    # ✅ SOMENTE RSS (sem aggregator)
+    itens = coletar_rss(dias=30)
 
     print(f"📄 {len(itens)} itens coletados")
 
@@ -29,6 +27,7 @@ def executar_pipeline():
     novas = 0
 
     for item in itens:
+
         texto = f"{item.get('titulo','')} {item.get('texto','')}".lower()
 
         if not any(t in texto for t in TERMOS_ELEGIVEIS):

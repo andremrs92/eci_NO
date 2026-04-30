@@ -9,17 +9,11 @@ DOMINIOS_INSTITUCIONAIS = [
     "sp.gov.br",
     "rj.gov.br",
     "mg.gov.br",
-    "rs.gov.br",
-    "sc.gov.br",
-    "pr.gov.br",
-    "ba.gov.br",
 ]
 
 TERMOS_PPP = [
-    "parceria público privada",
     "PPP",
     "concessão",
-    "parceria com o setor privado",
 ]
 
 
@@ -43,6 +37,7 @@ def coletar_rss(dias=30):
                 continue
 
             for entry in feed.entries:
+
                 data = _parse_data(entry)
 
                 if data < data_limite:
