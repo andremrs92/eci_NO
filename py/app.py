@@ -90,7 +90,6 @@ dados = sorted(dados, key=parse_data, reverse=True)
 # -----------------------------
 # Filtros
 # -----------------------------
-
 periodo = st.selectbox(
     "Período",
     ["Todos", "Hoje", "Últimos 7 dias", "Últimos 30 dias", "Mais antigos"]
@@ -125,10 +124,6 @@ if not dados_filtrados:
     st.info("Nenhuma oportunidade encontrada.")
 else:
     for d in dados_filtrados:
-
-        # ✅ IMAGEM
-        if d.get("imagem"):
-            st.image(d.get("imagem"), use_container_width=True)
 
         st.subheader(d.get("titulo"))
 
