@@ -42,7 +42,15 @@ def filtrar_por_data(dados, periodo):
     if periodo == "Últimos 30 dias":
         return [d for d in dados if (hoje - parse_data(d)).days <= 30]
 
+    if periodo == "Mais antigos":
+        return [d for d in dados if (hoje - parse_data(d)).days > 30]
+
     return dados
+
+
+def extrair_mes_ano(d):
+    data = parse_data(d)
+    return data.strftime("%B %Y")  # ex: April 2026
 
 
 # -----------------------------
@@ -55,26 +63,50 @@ st.caption("🔒 Dados atualizados pelo sistema interno")
 
 dados = carregar_dados()
 
-# ✅ Ordena do mais recente para o mais antigo
+# ✅ Ordena por data (mais recente primeiro)
 dados = sorted(dados, key=parse_data, reverse=True)
 
 # -----------------------------
-# Filtros
+# FILTROS
 # -----------------------------
+
+# 🔹 Filtro rápido
+periodo = st.selectbox(
+    "Período",
+    ["Todos", "Hoje", "Últimos 7 dias", "Últimos 30 dias", "Mais antigos"]
+)
+
+# 🔹 Filtro por mês (🔥 principal melhoria)
+meses = sorted(
+    set(extrair_mes_ano(d) for d in dados),
+    reverse=True
+)
+
+mes_selecionado = st.selectbox("Mês", ["Todos"] + meses)
+
+# 🔹 Filtro por setor (mantido)
 setores = sorted(set(d.get("setor", "Outro") for d in dados))
 setor = st.selectbox("Setor", ["Todos"] + setores)
 
-periodo = st.selectbox(
-    "Período",
-    ["Todos", "Hoje", "Últimos 7 dias", "Últimos 30 dias"]
-)
+# -----------------------------
+# Aplicação dos filtros
+# -----------------------------
 
 dados_filtrados = list(dados)
 
+# setor
 if setor != "Todos":
     dados_filtrados = [d for d in dados_filtrados if d.get("setor") == setor]
 
+# período
 dados_filtrados = filtrar_por_data(dados_filtrados, periodo)
+
+# mês
+if mes_selecionado != "Todos":
+    dados_filtrados = [
+        d for d in dados_filtrados
+        if extrair_mes_ano(d) == mes_selecionado
+    ]
 
 st.divider()
 
@@ -85,10 +117,11 @@ if not dados_filtrados:
     st.info("Nenhuma oportunidade encontrada para os filtros selecionados.")
 else:
     for d in dados_filtrados:
+
         st.subheader(d.get("titulo"))
 
         st.caption(
-            f"{formatar_data(d)} | {d.get('setor')} | Estágio: {d.get('estagio')}"
+            f"📅 {formatar_data(d)} | {d.get('setor')} | Estágio: {d.get('estagio')}"
         )
 
         st.write(d.get("resumo"))
