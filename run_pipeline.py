@@ -4,8 +4,8 @@ from openai_agent import analisar_texto
 from storage import salvar_oportunidade
 
 
-MAX_ANALISES_IA = 50   # ponto ótimo
-MODO_SECO = False     # True só quando estiver testando UI/fonte
+MAX_ANALISES_IA = 50
+MODO_SECO = False
 
 
 TERMOS_ELEGIVEIS = [
@@ -15,6 +15,7 @@ TERMOS_ELEGIVEIS = [
     "setor privado",
     "parceiro privado",
 ]
+
 
 # -----------------------------
 # 🧠 DEDUPLICAÇÃO
@@ -29,8 +30,6 @@ def remover_duplicados(itens):
 
     for item in itens:
         titulo = normalizar_texto(item.get("titulo", ""))
-
-        # chave baseada no título
         chave = titulo
 
         if chave in vistos:
@@ -46,31 +45,28 @@ def remover_duplicados(itens):
 # 🚀 PIPELINE
 # -----------------------------
 def executar_pipeline():
-    print("🔎 Radar de descoberta iniciado")
+    print("🔎 Radar iniciado")
 
     itens = []
     itens += coletar_rss(dias=30)
     itens += coletar_noticias_agregador(dias=30)
 
-    print(f"📄 {len(itens)} itens coletados")
+    print(f"📄 {len(itens)} coletados")
 
-    # ✅ REMOVE DUPLICADOS ANTES DA IA
+    # ✅ remove duplicados
     itens = remover_duplicados(itens)
-
-    print(f"🧹 Após deduplicação: {len(itens)} itens únicos")
+    print(f"🧹 {len(itens)} únicos")
 
     analises = 0
     novas = 0
 
     for item in itens:
-        texto = f"{item.get('titulo','')} {item.get('texto','')}"
-        texto_lower = texto.lower()
 
-        # ✅ Pré-filtro SIMPLES (só elegibilidade)
-        if not any(t in texto_lower for t in TERMOS_ELEGIVEIS):
+        texto = f"{item.get('titulo','')} {item.get('texto','')}".lower()
+
+        if not any(t in texto for t in TERMOS_ELEGIVEIS):
             continue
 
-        # ✅ Limite controlado de IA
         if analises >= MAX_ANALISES_IA:
             continue
 
@@ -83,16 +79,18 @@ def executar_pipeline():
         if not analise.get("eh_oportunidade"):
             continue
 
+        # ✅ IMPORTANTE: mantém imagem
         oportunidade = {
             **item,
-            **analise
+            **analise,
+            "imagem": item.get("imagem")  # garante que vá pro JSON
         }
 
         if salvar_oportunidade(oportunidade):
             novas += 1
-            print("✅ Nova oportunidade:", oportunidade.get("titulo"))
+            print("✅ Nova:", oportunidade.get("titulo"))
 
-    print(f"✅ Finalizado | IA usadas: {analises} | Novas: {novas}")
+    print(f"✅ Fim | IA: {analises} | Novas: {novas}")
 
 
 if __name__ == "__main__":
