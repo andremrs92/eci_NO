@@ -3,7 +3,7 @@ import json
 import os
 from datetime import datetime, timedelta
 
-ARQUIVO = "oportunidades.json"
+ARQUIVO = "py/oportunidades.json"
 
 
 # -----------------------------
