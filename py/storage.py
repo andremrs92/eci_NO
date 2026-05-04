@@ -1,7 +1,7 @@
 import json
 import os
 
-ARQUIVO_STORAGE = "oportunidades.json"
+ARQUIVO_STORAGE = "py/oportunidades.json"
 
 
 def carregar_oportunidades():
