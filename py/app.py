@@ -31,7 +31,6 @@ def formatar_data(d):
         return "-"
 
 
-# ✅ ÚNICA COISA ALTERADA (hora Brasil)
 def pegar_ultima_atualizacao():
     try:
         timestamp = os.path.getmtime(ARQUIVO)
@@ -89,7 +88,6 @@ st.set_page_config(page_title="Radar PPP", layout="wide")
 
 st.title("📡 Radar de Projetos de PPP's & Concessões")
 
-# ✅ agora com hora correta
 ultima = pegar_ultima_atualizacao()
 
 if ultima:
@@ -99,7 +97,7 @@ else:
 
 dados = carregar_dados()
 
-# ✅ ordena
+# ordena por data (mais recente primeiro)
 dados = sorted(dados, key=parse_data, reverse=True)
 
 
@@ -112,8 +110,28 @@ periodo = st.selectbox(
     ["Todos", "Hoje", "Últimos 7 dias", "Últimos 30 dias", "Mais antigos"]
 )
 
+# ✅ CORREÇÃO DA ORDEM DOS MESES (ÚNICA ALTERAÇÃO)
+ordem_meses = {
+    "Janeiro": 1,
+    "Fevereiro": 2,
+    "Março": 3,
+    "Abril": 4,
+    "Maio": 5,
+    "Junho": 6,
+    "Julho": 7,
+    "Agosto": 8,
+    "Setembro": 9,
+    "Outubro": 10,
+    "Novembro": 11,
+    "Dezembro": 12,
+}
+
 meses = sorted(
     set(extrair_mes_ano(d) for d in dados),
+    key=lambda x: (
+        int(x.split()[1]),                # ano
+        ordem_meses[x.split()[0]]        # mês
+    ),
     reverse=True
 )
 
@@ -126,7 +144,6 @@ setor = st.selectbox("Setor", ["Todos"] + setores)
 # -----------------------------
 # Aplicar filtros
 # -----------------------------
-
 dados_filtrados = list(dados)
 
 if setor != "Todos":
