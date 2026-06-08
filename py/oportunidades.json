@@ -814,5 +814,29 @@
     "estagio": "Consulta pública",
     "relevancia": "Média",
     "resumo": "Consulta pública para concessão e requalificação do Complexo Roosevelt no centro de São Paulo, visando revitalização do patrimônio e gestão administrativa."
+  },
+  {
+    "titulo": "Leilão da PPP do Hospital Municipal na B3 terá transmissão ao vivo em canais oficiais da Prefeitura - Prefeitura Municipal de Feira de Santana",
+    "texto": "<a href=\"https://news.google.com/rss/articles/CBMidEFVX3lxTE5iaVB6WlVjeFQ2ZUVyR1o0UGhHUlhWVHFBWjIzMTR5Wk9qSDU0aU53azZ5ZGZTZXh4dzNlQk0wSDVqR04xTzhLbENjQ3QwWHRNR0hpT2wzRW1YRjRValIyXzlzUG9HaVVyMjE3V2trVmVfdWdJ?oc=5\" target=\"_blank\">Leilão da PPP do Hospital Municipal na B3 terá transmissão ao vivo em canais oficiais da Prefeitura</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Prefeitura Municipal de Feira de Santana</font>",
+    "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5iaVB6WlVjeFQ2ZUVyR1o0UGhHUlhWVHFBWjIzMTR5Wk9qSDU0aU53azZ5ZGZTZXh4dzNlQk0wSDVqR04xTzhLbENjQ3QwWHRNR0hpT2wzRW1YRjRValIyXzlzUG9HaVVyMjE3V2trVmVfdWdJ?oc=5",
+    "data_publicacao": "2026-05-15",
+    "fonte": "gov.br",
+    "eh_oportunidade": true,
+    "setor": "Hospitalar",
+    "estagio": "Edital publicado",
+    "relevancia": "Alta",
+    "resumo": "PPP para construção e operação do hospital municipal em Feira de Santana com leilão anunciado na B3"
+  },
+  {
+    "titulo": "BNDES destaca impacto de PPP do saneamento na Paraíba - paraiba.pb.gov.br",
+    "texto": "<a href=\"https://news.google.com/rss/articles/CBMirgFBVV95cUxNSC0zTXV2TWtiT0paUHB0OE4tTXZXUHhMQjdPVHBIel8zTElsal9zSlVGZ1p0eWFOTnR2RjlKZjBGZW1jeWk4ODFiY3kybENNbWZhN1piam42SGxpYjdyT3VYN0ZTQVpyTVUzb1NxZmdOcG90N2FSUWEzSHBibkI3MzVabVotLVltQkw2d2ZfbW1aUjBTNktsa2NGbktLZ3I1bmxpakNTbFl1OGw5dEE?oc=5\" target=\"_blank\">BNDES destaca impacto de PPP do saneamento na Paraíba</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">paraiba.pb.gov.br</font>",
+    "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNSC0zTXV2TWtiT0paUHB0OE4tTXZXUHhMQjdPVHBIel8zTElsal9zSlVGZ1p0eWFOTnR2RjlKZjBGZW1jeWk4ODFiY3kybENNbWZhN1piam42SGxpYjdyT3VYN0ZTQVpyTVUzb1NxZmdOcG90N2FSUWEzSHBibkI3MzVabVotLVltQkw2d2ZfbW1aUjBTNktsa2NGbktLZ3I1bmxpakNTbFl1OGw5dEE?oc=5",
+    "data_publicacao": "2026-05-15",
+    "fonte": "gov.br",
+    "eh_oportunidade": true,
+    "setor": "Saneamento",
+    "estagio": "Anúncio / intenção inicial",
+    "relevancia": "Alta",
+    "resumo": "BNDES destaca impacto de PPP de saneamento na Paraíba, indicando o nascimento de um projeto relevante para expansão e melhoria dos serviços de saneamento no estado, ainda em fase inicial."
   }
 ]
