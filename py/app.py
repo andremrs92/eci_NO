@@ -84,9 +84,9 @@ def filtrar_por_data(dados, periodo):
 # -----------------------------
 # UI
 # -----------------------------
-st.set_page_config(page_title="Radar PPP", layout="wide")
+st.set_page_config(page_title="Radar ECI", layout="wide")
 
-st.title("📡 Radar de Projetos de PPP's & Concessões")
+st.title("📡 Projetos de PPP's & Concessões")
 
 ultima = pegar_ultima_atualizacao()
 
