@@ -106,7 +106,7 @@ dados = sorted(dados, key=parse_data, reverse=True)
 
 periodo = st.selectbox(
     "Período",
-    ["Todos", "Hoje", "Últimos 7 dias", "Últimos 30 dias", "Mais antigos"]
+    ["Todos", "Hoje", "Últimos 7 dias", "Últimos 30 dias"]
 )
 
 # ✅ CORREÇÃO DA ORDEM DOS MESES (ÚNICA ALTERAÇÃO)
