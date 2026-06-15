@@ -75,8 +75,7 @@ def filtrar_por_data(dados, periodo):
     if periodo == "Últimos 30 dias":
         return [d for d in dados if (hoje - parse_data(d)).days <= 30]
 
-    if periodo == "Mais antigos":
-        return [d for d in dados if (hoje - parse_data(d)).days > 30]
+
 
     return dados
 
