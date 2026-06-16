@@ -958,5 +958,29 @@
     "estagio": "Anúncio / intenção inicial",
     "relevancia": "Alta",
     "resumo": "Governo de São Paulo confirma consórcio vencedor para PPP do novo centro administrativo, marcando o nascimento do projeto."
+  },
+  {
+    "titulo": "Consulta Pública PPP da Estação Ferroviária - Prefeitura de Bauru",
+    "texto": "<a href=\"https://news.google.com/rss/articles/CBMihAFBVV95cUxOTTdkMW01eXB6b0RBdTExa0tzUmJiVTl4a1JLVHl5bmlvdGdSNXBFVDhsMzdtRk9rSWNnVzZNcmlOeUVZQ2RtNWZLMTQtVzR5eGZ0UF9BSzMzemNSSkM0U01sRXVNM2lRcXRMdFJHTXl4SVhxZnU0cjcxczZLWTl6VHMyLUs?oc=5\" target=\"_blank\">Consulta Pública PPP da Estação Ferroviária</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Prefeitura de Bauru</font>",
+    "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOTTdkMW01eXB6b0RBdTExa0tzUmJiVTl4a1JLVHl5bmlvdGdSNXBFVDhsMzdtRk9rSWNnVzZNcmlOeUVZQ2RtNWZLMTQtVzR5eGZ0UF9BSzMzemNSSkM0U01sRXVNM2lRcXRMdFJHTXl4SVhxZnU0cjcxczZLWTl6VHMyLUs?oc=5",
+    "data_publicacao": "2026-06-15",
+    "fonte": "gov.br",
+    "eh_oportunidade": true,
+    "setor": "Rodoviário",
+    "estagio": "Consulta pública",
+    "relevancia": "Média",
+    "resumo": "PPP para concessão da estação ferroviária em Bauru em fase de consulta pública"
+  },
+  {
+    "titulo": "SFB, BNDES e PPI laçam roadshow da concessão florestal da Gleba Castanho/AM - ppi.gov.br",
+    "texto": "<a href=\"https://news.google.com/rss/articles/CBMimgFBVV95cUxNdENkMUVWZE1wdm82dmxKRHRfY1pTck95cDNyZUstNlpDZlJOTU1vN3Q1WUJBQTVhRUNITmNpLXhyQXZ5OVA2ZFhYa0JZWC1vWWx2US0xekhtMGJ4S3B6Y2tYeE43V3JkeGJGQkgzSFVTNEc2V1dwX1lpVVBTWG1LUWxDekNETVRKNlRDXzMzcFRZMlVWS1BhZkVn?oc=5\" target=\"_blank\">SFB, BNDES e PPI laçam roadshow da concessão florestal da Gleba Castanho/AM</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">ppi.gov.br</font>",
+    "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNdENkMUVWZE1wdm82dmxKRHRfY1pTck95cDNyZUstNlpDZlJOTU1vN3Q1WUJBQTVhRUNITmNpLXhyQXZ5OVA2ZFhYa0JZWC1vWWx2US0xekhtMGJ4S3B6Y2tYeE43V3JkeGJGQkgzSFVTNEc2V1dwX1lpVVBTWG1LUWxDekNETVRKNlRDXzMzcFRZMlVWS1BhZkVn?oc=5",
+    "data_publicacao": "2026-06-15",
+    "fonte": "gov.br",
+    "eh_oportunidade": true,
+    "setor": "Outro",
+    "estagio": "Anúncio / intenção inicial",
+    "relevancia": "Média",
+    "resumo": "Lançamento do roadshow da concessão florestal da Gleba Castanho, no Amazonas, indicando início do projeto de concessão."
   }
 ]
