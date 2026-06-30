@@ -25,7 +25,6 @@ def executar_pipeline():
     analises = 0
     novas = 0
 
-    # ✅ LISTA NOVA (NÃO ALTERA NADA DO RESTO)
     novas_lista = []
 
     for item in itens:
@@ -34,15 +33,12 @@ def executar_pipeline():
 
         texto = f"{item.get('titulo','')} {item.get('texto','')}".lower()
 
-        # ✅ filtro simples
         if not any(t in texto for t in TERMOS_ELEGIVEIS):
             continue
 
-        # ✅ limite de uso da IA
         if analises >= MAX_ANALISES_IA:
             continue
 
-        # ✅ IA protegida contra travamento
         try:
             analise = analisar_texto(texto)
             analises += 1
@@ -61,13 +57,11 @@ def executar_pipeline():
         if salvar_oportunidade(oportunidade):
             novas += 1
 
-            # ✅ ADIÇÃO (GUARDA PRA EMAIL)
             novas_lista.append(oportunidade)
 
             print("✅ Nova:", oportunidade.get("titulo"))
 
 
-    # ✅ salva data (mantém seu app funcionando)
     with open("ultima_atualizacao.json", "w", encoding="utf-8") as f:
         json.dump(
             {"ultima_atualizacao": datetime.now().strftime("%d/%m/%Y %H:%M")},
