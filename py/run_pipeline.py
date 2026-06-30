@@ -4,9 +4,6 @@ from storage import salvar_oportunidade
 from datetime import datetime
 import json
 
-# ✅ NOVO IMPORT (EMAIL)
-from email_sender import enviar_email
-
 MAX_ANALISES_IA = 50
 
 TERMOS_ELEGIVEIS = [
@@ -69,9 +66,6 @@ def executar_pipeline():
 
             print("✅ Nova:", oportunidade.get("titulo"))
 
-    # ✅ ENVIA EMAIL (SÓ SE TIVER NOVAS)
-    if novas_lista:
-        enviar_email(novas_lista)
 
     # ✅ salva data (mantém seu app funcionando)
     with open("ultima_atualizacao.json", "w", encoding="utf-8") as f:
